@@ -1,12 +1,12 @@
-### hapi auth bearer token
+### hapi auth bearer
 
-[![Build Status](https://travis-ci.org/johnbrett/hapi-auth-bearer-token.svg?branch=master)](https://travis-ci.org/johnbrett/hapi-auth-bearer-token)
+[![Build Status](https://travis-ci.org/tk120404/hapi-auth-bearer.svg?branch=master)](https://travis-ci.org/tk120404/hapi-auth-bearer)
 
-[Release Notes](https://github.com/johnbrett/hapi-auth-bearer-token/issues/146) for **Version 6.x.x** which only supports hapi v17 and above.
+[Release Notes] supports hapi v17 and above.
 
-**Note:** For hapi versions below v17, you must use versions v5.x.x of this module.
 
-Lead Maintainer: [John Brett](https://github.com/johnbrett)
+Lead Maintainer:  [Arjunkumar T K](https://github.com/tk120404),[John Brett](https://github.com/johnbrett)
+
 
 Bearer authentication requires validating a token passed in by bearer authorization header or query parameter.
 
@@ -16,10 +16,12 @@ This module creates a `'bearer-access-token'` scheme takes the following options
     - `request` - is the hapi request object of the request which is being authenticated.
     - `token` - the auth token received from the client.
     - `h` - the response toolkit.
-    - Returns an object `{ isValid, credentials, artifacts }` where:
+    - Returns an object `{ isValid, credentials, artifacts, isblocked }` where:
         - `isValid` - `true` if token is valid, otherwise `false`.
         - `credentials` - a credentials object passed back to the application in `request.auth.credentials`. Note that due to underlying Hapi expectations, this value must be defined even if `isValid` is `false`. We recommend it be set to `{}` if `isValid` is `false` and you have no other value to provide.
         - `artifacts` - optional [authentication](http://hapijs.com/tutorials/auth) related data that is not part of the user's credential.
+        - `isblocked` - optional and defaults to false, if true throw Block error message 
+
 - `options` - (optional)
     - `accessTokenName` (Default: `'access_token'`) - Rename token key e.g. 'new_name' would rename the token query parameter to `/route1?new_name=1234`.
     - `allowQueryToken` (Default: `false`) - Accept token via query parameter.
@@ -33,7 +35,7 @@ This module creates a `'bearer-access-token'` scheme takes the following options
 
 ```javascript
 const Hapi = require('hapi');
-const AuthBearer = require('hapi-auth-bearer-token');
+const AuthBearer = require('hapi-auth-bearer');
 
 const server = Hapi.server({ port: 8080 });
 
@@ -47,12 +49,12 @@ const start = async () => {
 
             // here is where you validate your token
             // comparing with token from your database for example
-            const isValid = token === '1234';
+            const isValid = token === '1234',
+                  credentials = { token },
+                  artifacts = { test: 'info' },
+                  isblocked = false
 
-            const credentials = { token };
-            const artifacts = { test: 'info' };
-
-            return { isValid, credentials, artifacts };
+            return { isValid, credentials, artifacts, isblocked };//isblocked is optional
         }
     });
 
@@ -92,4 +94,4 @@ start()
  */
 ```
 
-License MIT @ John Brett and other contributors 2018
+License MIT @ John Brett and other contributors 2019

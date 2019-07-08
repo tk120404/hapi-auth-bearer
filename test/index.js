@@ -6,13 +6,14 @@ const Hapi = require('@hapi/hapi');
 const Boom = require('@hapi/boom');
 
 const lab = exports.lab = Lab.script();
-
+console.log('First');
 const expect = Code.expect;
 const before = lab.before;
 const after = lab.after;
 const it = lab.it;
 const describe = lab.describe;
 
+console.log('second');
 
 const defaultHandler = (request, h) => {
 
@@ -34,6 +35,28 @@ const alwaysRejectValidateFunc = (request, token) => {
     return {
         isValid: false,
         credentials: { token }
+    };
+};
+
+const alwaysBlockedValidateFunc = (request, token) => {
+
+    return {
+        isValid: token === '12345678',
+        credentials: { token },
+        isBlocked: true
+    };
+};
+
+
+const alwaysNotBlocked = (request, token) => {
+
+    return {
+        isValid: token === '12345678',
+        credentials: { token },
+        isBlocked: false,
+        artifacts: {
+            sampleArtifact: 'artifact'
+        }
     };
 };
 
@@ -111,6 +134,14 @@ describe('default single strategy', () => {
             validate: alwaysRejectValidateFunc
         });
 
+        server.auth.strategy('always_blocked', 'bearer-access-token', {
+            validate: alwaysBlockedValidateFunc
+        });
+
+        server.auth.strategy('not_blocked', 'bearer-access-token', {
+            validate: alwaysNotBlocked
+        });
+
         server.auth.strategy('with_error_strategy', 'bearer-access-token', {
             validate: alwaysErrorValidateFunc
         });
@@ -183,6 +214,12 @@ describe('default single strategy', () => {
             allowChaining: true
         });
 
+        server.auth.strategy('custom_unauthorized_blocked_func', 'bearer-access-token', {
+            validate: alwaysBlockedValidateFunc,
+            unauthorized: (message, schema, attributed) => Boom.notFound(),
+            allowChaining: true
+        });
+
         server.route([
             { method: 'POST', path: '/basic', handler: defaultHandler, options: { auth: 'default' } },
             { method: 'POST', path: '/basic_default_auth', handler: defaultHandler, options: { } },
@@ -190,6 +227,8 @@ describe('default single strategy', () => {
             { method: 'GET', path: '/basic_validate_error', handler: defaultHandler, options: { auth: 'with_error_strategy' } },
             { method: 'GET', path: '/boom_validate_error', handler: defaultHandler, options: { auth: 'boom_error_strategy' } },
             { method: 'GET', path: '/always_reject', handler: defaultHandler, options: { auth: 'always_reject' } },
+            { method: 'GET', path: '/always_blocked', handler: defaultHandler, options: { auth: 'always_blocked' } },
+            { method: 'GET', path: '/not_blocked', handler: defaultHandler, options: { auth: 'not_blocked' } },
             { method: 'GET', path: '/null_credentials', handler: defaultHandler, options: { auth: 'null_credentials' } },
             { method: 'GET', path: '/non_object_credentials', handler: defaultHandler, options: { auth: 'non_object_credentials' } },
             { method: 'GET', path: '/no_credentials', handler: defaultHandler, options: { auth: 'no_credentials' } },
@@ -201,6 +240,7 @@ describe('default single strategy', () => {
             { method: 'GET', path: '/multiple_headers_enabled', handler: defaultHandler, options: { auth: 'multiple_headers' } },
             { method: 'GET', path: '/custom_token_type', handler: defaultHandler, options: { auth: 'custom_token_type' } },
             { method: 'GET', path: '/custom_unauthorized_func', handler: defaultHandler, options: { auth: 'custom_unauthorized_func' } },
+            { method: 'GET', path: '/custom_unauthorized_blocked_func', handler: defaultHandler, options: { auth: 'custom_unauthorized_blocked_func' } },
             { method: 'GET', path: '/artifacts', handler: defaultHandler, options: { auth: 'artifact_test' } },
             { method: 'GET', path: '/chain', handler: defaultHandler, options: { auth: { strategies: ['reject_with_chain', 'default'] } } },
             { method: 'GET', path: '/chain_single_strategy', handler: defaultHandler, config: { auth: 'reject_with_chain' } }
@@ -343,6 +383,32 @@ describe('default single strategy', () => {
         });
         expect(res.statusCode).to.equal(401);
     });
+
+    it('returns 401 handles when isBlocked true passed to validateFunc', async () => {
+
+        const request = { method: 'GET', url: '/always_blocked', headers: { authorization: 'Bearer 12345678' } };
+        const res = await server.inject(request);
+
+        expect(res.result).to.equal({
+            statusCode: 401,
+            error: 'Unauthorized',
+            message: 'Oops, Your account is blocked. Please contact your admin',
+            attributes: {
+                error: 'Oops, Your account is blocked. Please contact your admin'
+            }
+        });
+        expect(res.statusCode).to.equal(401);
+    });
+
+    it('returns 401 handles when isBlocked true passed to validateFunc', async () => {
+
+        const request = { method: 'GET', url: '/not_blocked', headers: { authorization: 'Bearer 12345678' } };
+        const res = await server.inject(request);
+
+        expect(res.statusCode).to.equal(200);
+        expect(res.result).to.equal('success');
+    });
+
 
 
     it('returns 500 when null credentials passed to validateFunc', async () => {
