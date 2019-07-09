@@ -1,11 +1,11 @@
 {
-  "name": "hapi-auth-bearer",
+  "name": "hapi-bearer-auth",
   "description": "Simple Bearer authentication scheme plugin for hapi, accepts token by Header, Cookie or Query parameter.",
   "version": "0.0.1",
   "author": "Arjunkumar T K, John Brett <johnbrett7@gmail.com> (https://johnbrett.me)",
   "repository": {
     "type": "git",
-    "url": "git://github.com/tk120404/hapi-auth-bearer"
+    "url": "git://github.com/tk120404/hapi-bearer-auth"
   },
   "main": "lib/index.js",
   "keywords": [
@@ -39,9 +39,9 @@
     "test-cov-html": "lab -a @hapi/code -r html -o coverage.html"
   },
   "bugs": {
-    "url": "https://github.com/tk120404/hapi-auth-bearer/issues"
+    "url": "https://github.com/tk120404/hapi-bearer-auth/issues"
   },
-  "homepage": "https://github.com/tk120404/hapi-auth-bearer",
+  "homepage": "https://github.com/tk120404/hapi-bearer-auth",
   "directories": {
     "test": "test"
   },

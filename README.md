@@ -1,6 +1,6 @@
 ### hapi auth bearer
 
-[![Build Status](https://travis-ci.org/tk120404/hapi-auth-bearer.svg?branch=master)](https://travis-ci.org/tk120404/hapi-auth-bearer)
+[![Build Status](https://travis-ci.org/tk120404/hapi-bearer-auth.svg?branch=master)](https://travis-ci.org/tk120404/hapi-bearer-auth)
 
 [Release Notes] supports hapi v17 and above.
 
@@ -35,7 +35,7 @@ This module creates a `'bearer-access-token'` scheme takes the following options
 
 ```javascript
 const Hapi = require('hapi');
-const AuthBearer = require('hapi-auth-bearer');
+const AuthBearer = require('hapi-bearer-auth');
 
 const server = Hapi.server({ port: 8080 });
 
