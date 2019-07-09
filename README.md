@@ -5,7 +5,7 @@
 [Release Notes] supports hapi v17 and above.
 
 
-Lead Maintainer:  [Arjunkumar T K](https://github.com/tk120404),[John Brett](https://github.com/johnbrett)
+Lead Maintainer:  [Arjunkumar T K](https://github.com/tk120404), [John Brett](https://github.com/johnbrett)
 
 
 Bearer authentication requires validating a token passed in by bearer authorization header or query parameter.
