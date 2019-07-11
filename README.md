@@ -16,6 +16,7 @@ This module creates a `'bearer-access-token'` scheme takes the following options
     - `request` - is the hapi request object of the request which is being authenticated.
     - `token` - the auth token received from the client.
     - `h` - the response toolkit.
+    - `entity` - the entity which is being authenticated
     - Returns an object `{ isValid, credentials, artifacts, isblocked }` where:
         - `isValid` - `true` if token is valid, otherwise `false`.
         - `credentials` - a credentials object passed back to the application in `request.auth.credentials`. Note that due to underlying Hapi expectations, this value must be defined even if `isValid` is `false`. We recommend it be set to `{}` if `isValid` is `false` and you have no other value to provide.
@@ -30,6 +31,7 @@ This module creates a `'bearer-access-token'` scheme takes the following options
     - `tokenType` (Default: `'Bearer'`) - Accept a custom token type e.g. `Authorization: Basic 12345678`.
     - `allowChaining` (Default: `false`) - Allow attempt of additional authentication strategies.
     - `unauthorized` (Default: `Boom.unauthorized`) - A function to call when unauthorized with signature `function([message], [scheme], [attributes])`. [More details](https://github.com/hapijs/boom#boomunauthorizedmessage-scheme-attributes)
+    - `entityType` - Accept a custom entity token type e.g. `Authorization: Unit 40934509`.
 
         If using a custom `unauthorized` function, it is recommended you read hapi's documentation on authentication schemes, especially in the case of using multiple strategies: [Authentication scheme](https://hapijs.com/api#authentication-scheme).
 
@@ -45,7 +47,7 @@ const start = async () => {
 
     server.auth.strategy('simple', 'bearer-access-token', {
         allowQueryToken: true,              // optional, false by default
-        validate: async (request, token, h) => {
+        validate: async (request, token, h, entity) => {
 
             // here is where you validate your token
             // comparing with token from your database for example

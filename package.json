@@ -1,49 +1,49 @@
 {
-  "name": "hapi-bearer-auth",
-  "description": "Simple Bearer authentication scheme plugin for hapi, accepts token by Header, Cookie or Query parameter.",
-  "version": "0.0.2",
-  "author": "Arjunkumar T K, John Brett <johnbrett7@gmail.com> (https://johnbrett.me)",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/tk120404/hapi-bearer-auth"
-  },
-  "main": "lib/index.js",
-  "keywords": [
-    "hapi",
-    "plugin",
-    "auth",
-    "scheme",
-    "bearer",
-    "token",
-    "cookie",
-    "authentication"
-  ],
-  "engines": {
-    "node": ">=8.0.0"
-  },
-  "dependencies": {
-    "@hapi/boom": "^7.4.2",
-    "@hapi/hoek": "^6.2.3",
-    "@hapi/joi": "^15.0.3"
-  },
-  "peerDependencies": {
-    "@hapi/hapi": ">=17.x.x"
-  },
-  "devDependencies": {
-    "@hapi/code": "^5.3.1",
-    "@hapi/hapi": "^17.9.0",
-    "@hapi/lab": "^19.0.1"
-  },
-  "scripts": {
-    "test": "lab -a @hapi/code -t 100 -L",
-    "test-cov-html": "lab -a @hapi/code -r html -o coverage.html"
-  },
-  "bugs": {
-    "url": "https://github.com/tk120404/hapi-bearer-auth/issues"
-  },
-  "homepage": "https://github.com/tk120404/hapi-bearer-auth",
-  "directories": {
-    "test": "test"
-  },
-  "license": "MIT"
+    "name": "hapi-bearer-auth",
+    "description": "Simple Bearer authentication scheme plugin for hapi, accepts token by Header, Cookie or Query parameter.",
+    "version": "0.0.3",
+    "author": "Arjunkumar T K, John Brett <johnbrett7@gmail.com> (https://johnbrett.me)",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/tk120404/hapi-bearer-auth"
+    },
+    "main": "lib/index.js",
+    "keywords": [
+        "hapi",
+        "plugin",
+        "auth",
+        "scheme",
+        "bearer",
+        "token",
+        "cookie",
+        "authentication"
+    ],
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "dependencies": {
+        "@hapi/boom": "^7.4.2",
+        "@hapi/hoek": "^6.2.3",
+        "@hapi/joi": "^15.0.3"
+    },
+    "peerDependencies": {
+        "@hapi/hapi": ">=17.x.x"
+    },
+    "devDependencies": {
+        "@hapi/code": "^5.3.1",
+        "@hapi/hapi": "^17.9.0",
+        "@hapi/lab": "^19.0.1"
+    },
+    "scripts": {
+        "test": "lab -a @hapi/code -t 100 -L",
+        "test-cov-html": "lab -a @hapi/code -r html -o coverage.html"
+    },
+    "bugs": {
+        "url": "https://github.com/tk120404/hapi-bearer-auth/issues"
+    },
+    "homepage": "https://github.com/tk120404/hapi-bearer-auth",
+    "directories": {
+        "test": "test"
+    },
+    "license": "MIT"
 }
